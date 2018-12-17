@@ -7,7 +7,7 @@ package com.sjtu.yifei.algorithm;
  */
 public class Test {
 
-    private static final int TIMES = 1000000;
+    private static final int TIMES = 100000;
 
     public static void main(String[] strings) {
         System.out.print("冒泡排序");
@@ -20,6 +20,8 @@ public class Test {
         testSort(3);
         System.out.print("归并排序");
         testSort(4);
+        System.out.print("快速排序");
+        testSort(5);
     }
 
     /**
@@ -28,7 +30,7 @@ public class Test {
     private static void testSort(int sort_type) {
         int[] arr = getTestData();
         long time = System.currentTimeMillis();
-        for (int i = 0; i < TIMES; i ++) {
+        for (int i = 0; i < TIMES; i++) {
             arr = getTestData();
             if (sort_type == 0) { // 冒泡排序
                 SortAlgorithm.getInstance().bubbleSort(arr);
@@ -40,6 +42,8 @@ public class Test {
                 SortAlgorithm.getInstance().shellSort(arr);
             } else if (sort_type == 4) {// 归并排序
                 arr = SortAlgorithm.getInstance().mergeSort(arr);
+            } else if (sort_type == 5) {// 快速排序
+                SortAlgorithm.getInstance().quickSort(arr);
             }
         }
         System.out.print(" cost time ->" + (System.currentTimeMillis() - time));
@@ -47,7 +51,7 @@ public class Test {
     }
 
     private static int[] getTestData() {
-        return new int[]{2, 5, 10, 9, 1, 30, 11, 4, 12, 31, 0, 19, 21, 6, 13, 18, 7, 15, 20, 8};
+        return new int[]{211, 4, 12, 31,100, 0, 19, 70, 21, 6, 13,80, 18, 7,91, 33, 15, 20, 51, 8, 5, 10, 58, 9, 1, 30, 42};
     }
 
     private static void printArr(int[] arr) {

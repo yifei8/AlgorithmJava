@@ -15,8 +15,50 @@ public class SortAlgorithm {
         return instance;
     }
 
+    public void quickSort(int arr[]) {
+        int left = 0;
+        int right = arr.length - 1;
+        quickSort(arr, left, right);
+    }
+
     /**
-     * 归并排序（Merge Sort）
+     * 快速排序
+     *
+     * @param arr
+     */
+    private void quickSort(int arr[], int left, int right) {
+        if (right - left < 1) {
+            return;
+        }
+        int baseIndex = partQuickSort(arr, left, right);
+        quickSort(arr, left, baseIndex - 1);
+        quickSort(arr, baseIndex + 1, right);
+    }
+
+    private int partQuickSort(int arr[], int left, int right) {
+        int indicate = left;
+        while (left < right) {
+            if (indicate == left) {
+                if (arr[right] > arr[indicate]) {
+                    right--;
+                } else {
+                    swap(arr, indicate, right);
+                    indicate = right;
+                }
+            } else {
+                if (arr[left] < arr[indicate]) {
+                    left++;
+                } else {
+                    swap(arr, indicate, left);
+                    indicate = left;
+                }
+            }
+        }
+        return indicate;
+    }
+
+    /**
+     * 归并排序（Merge Sort） O(n log n)
      * <p>
      * 归并排序是建立在归并操作上的一种有效的排序算法。
      * 该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。
@@ -52,11 +94,9 @@ public class SortAlgorithm {
         int count = 0, i = 0, j = 0;
         for (; i < leftArr.length && j < rightArr.length; count++) {
             if (leftArr[i] < rightArr[j]) {
-                result[count] = leftArr[i];
-                i++;
+                result[count] = leftArr[i++];
             } else {
-                result[count] = rightArr[j];
-                j++;
+                result[count] = rightArr[j++];
             }
         }
         for (; i < leftArr.length; i++) {
@@ -77,7 +117,7 @@ public class SortAlgorithm {
      * 重复这过程，不过每次用更长的列（步长更长了，列数更少了）来进行。
      * 最后整个表就只有一列了。将数组转换至表是为了更好地理解这算法，算
      * 法本身还是使用数组进行排序。
-     *
+     * <p>
      * 其时间复杂度为O(n^3/2),要好于直接插入排序的O(n^2)
      *
      * @param arr
