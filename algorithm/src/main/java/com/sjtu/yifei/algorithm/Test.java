@@ -1,64 +1,81 @@
 package com.sjtu.yifei.algorithm;
 
+import java.util.HashMap;
+
 /**
  * [description]
  * author: yifei
- * created at 18/12/14 下午10:29
+ * created at 18/12/21 下午11:42
  */
 public class Test {
 
-    private static final int TIMES = 100000;
-
     public static void main(String[] strings) {
-        System.out.print("冒泡排序");
-        testSort(0);
-        System.out.print("选择排序");
-        testSort(1);
-        System.out.print("插入排序");
-        testSort(2);
-        System.out.print("希尔排序");
-        testSort(3);
-        System.out.print("归并排序");
-        testSort(4);
-        System.out.print("快速排序");
-        testSort(5);
+        int a[] = {10, -2, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
+//        int a[] = {-2, 10, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
+//        int a[] = {-2, 10, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
+//        a = setParted1(a);
+        setParted3(a);
+        printArr(a);
+        System.out.println("expect result : {-2,-4,-3,-88,-23,10,5,8,2,7,12,35}");
+
     }
 
-    /**
-     * 测试排序算法
-     */
-    private static void testSort(int sort_type) {
-        int[] arr = getTestData();
-        long time = System.currentTimeMillis();
-        for (int i = 0; i < TIMES; i++) {
-            arr = getTestData();
-            if (sort_type == 0) { // 冒泡排序
-                SortAlgorithm.getInstance().bubbleSort(arr);
-            } else if (sort_type == 1) {// 选择排序
-                SortAlgorithm.getInstance().selectionSort(arr);
-            } else if (sort_type == 2) {//插入排序
-                SortAlgorithm.getInstance().insertionSort(arr);
-            } else if (sort_type == 3) {// 希尔排序
-                SortAlgorithm.getInstance().shellSort(arr);
-            } else if (sort_type == 4) {// 归并排序
-                arr = SortAlgorithm.getInstance().mergeSort(arr);
-            } else if (sort_type == 5) {// 快速排序
-                SortAlgorithm.getInstance().quickSort(arr);
+    private static int[] setParted1(int[] a) {
+        int[] above0 = new int[a.length];
+        int[] below0 = new int[a.length];
+        int ai = 0, bi = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] < 0) {
+                below0[ai++] = a[i];
+            } else {
+                above0[bi++] = a[i];
             }
         }
-        System.out.print(" cost time ->" + (System.currentTimeMillis() - time));
-        printArr(arr);
+        for (int j = 0; j < bi; j++) {
+            below0[ai++] = above0[j];
+        }
+        return below0;
     }
 
-    private static int[] getTestData() {
-        return new int[]{211, 4, 12, 31,100, 0, 19, 70, 21, 6, 13,80, 18, 7,91, 33, 15, 20, 51, 8, 5, 10, 58, 9, 1, 30, 42};
+    public static void setParted2(int[] a) {
+        int temp = 0;
+        int border = -1;
+
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] < 0 && i > border) {
+                temp = a[i];
+                a[i] = a[border + 1];
+                a[border + 1] = temp;
+                border++;
+            }
+        }
+
+
+    }
+
+    private static void setParted3(int[] a) {
+        int i = 0;//指向当前大于0 的第一个数的下标
+        int j = -1;//指向当前小于0 的第一个数的下标
+        while (i < a.length) {
+            if (a[i] < 0) {
+                swap(a, i, j + 1);
+                j ++;
+            }
+            i++;
+        }
+    }
+
+    private static void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 
     private static void printArr(int[] arr) {
-        System.out.print("，排序结果：");
+        System.out.print(" truth result : {");
         for (int i : arr) {
-            System.out.print(i + " ");
+            System.out.print(i + ",");
         }
-        System.out.println();
+        System.out.println("}");
     }
 }

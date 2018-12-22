@@ -15,10 +15,35 @@ public class SortAlgorithm {
         return instance;
     }
 
-    public void quickSort(int arr[]) {
-        int left = 0;
-        int right = arr.length - 1;
-        quickSort(arr, left, right);
+    /**
+     * 计数排序
+     * {4,-5,3,-1,6,3,5,1};
+     *
+     * @param arr
+     */
+    public int[] countSort(int arr[]) {
+        int min = 0, max = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+        }
+        int C[] = new int[max - min + 1];
+        for (int i = 0; i < arr.length; i++) {
+            C[arr[i] - min]++;
+        }
+
+        int B[] = new int[arr.length];
+        for (int i = 0, j = 0; i < C.length; i++) {
+            while (C[i] > 0) {
+                B[j ++] = i - min;
+                C[i]--;
+            }
+        }
+        return B;
     }
 
     /**
@@ -26,6 +51,12 @@ public class SortAlgorithm {
      *
      * @param arr
      */
+    public void quickSort(int arr[]) {
+        int left = 0;
+        int right = arr.length - 1;
+        quickSort(arr, left, right);
+    }
+
     private void quickSort(int arr[], int left, int right) {
         if (right - left < 1) {
             return;
@@ -36,7 +67,7 @@ public class SortAlgorithm {
     }
 
     private int partQuickSort(int arr[], int left, int right) {
-        int indicate = left;
+        int indicate = left;//切分的数字下标
         while (left < right) {
             if (indicate == left) {
                 if (arr[right] > arr[indicate]) {
